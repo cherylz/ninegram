@@ -1,22 +1,24 @@
-let currentImageIndex;
-let currentSearchTerm;
-let easterEggShown = false;
+'use strict';
+
+var currentImageIndex;
+var currentSearchTerm;
+var easterEggShown = false;
 
 // If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
 // Must be executed before updatePage(searchTerm, '') because updatePage needs the updated value of easterEggShown.
-const easter = localStorage.getItem('easterEggShown');
+var easter = localStorage.getItem('easterEggShown');
 if (easter) {
   easterEggShown = true;
 }
 
 // On page load, update the page with images fetched from API.
-const randomTerms = ['architecture', 'city', 'mountain', 'london'];
-const searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
+var randomTerms = ['architecture', 'city', 'mountain', 'london'];
+var searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
 updatePage(searchTerm, '');
 
 // Add event listeners to the search box.
-const inputBox = document.querySelector('input[type=text]');
-const searchBtn = document.querySelector('.search > button');
+var inputBox = document.querySelector('input[type=text]');
+var searchBtn = document.querySelector('.search > button');
 inputBox.addEventListener('keyup', handleSearch);
 searchBtn.addEventListener('click', handleSearch);
 
@@ -38,8 +40,8 @@ window.addEventListener('scroll', function() {
 // Below are the functions to be called.
 
 function showSlide() {
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach((slide, index) => {
+  var slides = document.querySelectorAll('.slide');
+  slides.forEach(function(slide, index) {
     if (index === currentImageIndex) {
       slide.className = 'slide active';
     } else {
@@ -49,22 +51,23 @@ function showSlide() {
 }
 
 function onImageClick() {
-  const images = document.querySelectorAll('.gallery-item > img');
-  images.forEach(image =>
-    image.addEventListener('click', function(e) {
+  var images = document.querySelectorAll('.gallery-item > img');
+  images.forEach(function(image) {
+    return image.addEventListener('click', function(e) {
       // Display the modal
-      const modal = document.querySelector('.modal');
+      var modal = document.querySelector('.modal');
       modal.className = 'modal';
 
       // Display the corresponding image
       currentImageIndex = parseInt(this.dataset.index);
       showSlide();
-    })
-  );
+    });
+  });
 }
 
 function handleSlideScroll(num) {
-  const slides = document.querySelectorAll('.slide');
+  var slides = document.querySelectorAll('.slide');
+
   if (currentImageIndex + num >= slides.length) {
     currentImageIndex = 0;
   } else if (currentImageIndex + num === -1) {
@@ -72,17 +75,20 @@ function handleSlideScroll(num) {
   } else {
     currentImageIndex += num;
   }
+
   showSlide();
 }
 
 function handleArrowKey(e) {
-  const modal = document.querySelector('.modal');
+  var modal = document.querySelector('.modal');
+
   if (modal.className === 'modal') {
     if (e.key === 'ArrowLeft') {
       // Prevent horizontal scrolling
       e.preventDefault();
       handleSlideScroll(-1);
     }
+
     if (e.key === 'ArrowRight') {
       // Prevent horizontal scrolling
       e.preventDefault();
@@ -92,19 +98,21 @@ function handleArrowKey(e) {
 }
 
 function handleEscKey(e) {
-  const modal = document.querySelector('.modal');
+  var modal = document.querySelector('.modal');
+
   if (modal.className === 'modal' && e.key === 'Escape') {
     handleLightboxClose();
   }
 }
 
 function handleLightboxClose() {
-  const modal = document.querySelector('.modal');
+  var modal = document.querySelector('.modal');
   modal.className = 'modal no-display';
 }
 
 function decideWhetherToCloseLightbox(e) {
-  const targetClass = e.target.className;
+  var targetClass = e.target.className;
+
   if (
     targetClass !== 'close' &&
     targetClass !== 'prev' &&
@@ -117,8 +125,12 @@ function decideWhetherToCloseLightbox(e) {
 }
 
 function onSlideScroll() {
-  document.querySelector('.prev').addEventListener('click', () => handleSlideScroll(-1));
-  document.querySelector('.next').addEventListener('click', () => handleSlideScroll(1));
+  document.querySelector('.prev').addEventListener('click', function() {
+    return handleSlideScroll(-1);
+  });
+  document.querySelector('.next').addEventListener('click', function() {
+    return handleSlideScroll(1);
+  });
   document.addEventListener('keydown', handleArrowKey);
 }
 
@@ -135,19 +147,24 @@ function updatePage(term, from) {
     document.querySelector('.easter-egg').innerHTML = '';
   }
 
-  const promptMsg = document.querySelector('.instruction > p');
+  var promptMsg = document.querySelector('.instruction > p');
+
   if (from === 'user') {
     promptMsg.className = 'prompt-color';
     promptMsg.textContent = 'Searching...';
   }
 
   fetch(
-    `https://pixabay.com/api/?key=11381563-185a2b7b89dac3ac1a22ea903&q=${term}&image_type=photo&min_width=200&min_height=200&per_page=9&editors_choice=true&safesearch=true`
+    'https://pixabay.com/api/?key=11381563-185a2b7b89dac3ac1a22ea903&q='.concat(
+      term,
+      '&image_type=photo&min_width=200&min_height=200&per_page=9&editors_choice=true&safesearch=true'
+    )
   )
-    .then(res => {
+    .then(function(res) {
       if (res.ok) {
         return res.json();
       }
+
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
@@ -156,31 +173,30 @@ function updatePage(term, from) {
         promptMsg.className = 'prompt-color';
         promptMsg.textContent = 'Oops... Something went wrong. Please refresh the page.';
       }
+
       throw Error(res.statusText);
     })
-    .then(res => {
+    .then(function(res) {
       // Handle the case when less than 9 images are fetched
-      const results = res.hits;
+      var results = res.hits;
+
       if (from === 'user' && results.length < 9) {
         promptMsg.className = '';
         promptMsg.textContent =
           'Oops... Less than 9 images found. Why not try another search term? Or you can just enjoy the existing images below. :)';
         return;
-      }
+      } // Render images
 
-      // Render images
-      const gallery = document.querySelector('.gallery-container');
-      const htmlInGallery = results.reduce(
-        (str, item, index) =>
+      var gallery = document.querySelector('.gallery-container');
+      var htmlInGallery = results.reduce(function(str, item, index) {
+        return (
           str +
-          `<div class="gallery-item">
-            <img
-              src=${item.webformatURL.replace('_640', '_340')}
-              alt="${item.tags}"
-              data-index=${index}>
-          </div>`,
-        ''
-      );
+          '<div class="gallery-item">\n            <img\n              src='
+            .concat(item.webformatURL.replace('_640', '_340'), '\n              alt="')
+            .concat(item.tags, '"\n              data-index=')
+            .concat(index, '>\n          </div>')
+        );
+      }, '');
       gallery.innerHTML = htmlInGallery;
 
       // Render proper prompt message
@@ -194,35 +210,34 @@ function updatePage(term, from) {
       onImageClick();
 
       // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon
-      const modal = document.querySelector('.modal');
+      var modal = document.querySelector('.modal');
       modal.innerHTML = '';
       // -> step 1: create the close icon node
-      const closeIcon = document.createElement('span');
+      var closeIcon = document.createElement('span');
       closeIcon.className = 'close';
       closeIcon.innerHTML = '&times;';
       // -> step 2: create the slideshow node
-      const slideshowDiv = document.createElement('div');
-      const slides = results.reduce(
-        (str, item, index) =>
+      var slideshowDiv = document.createElement('div');
+      var slides = results.reduce(function(str, item, index) {
+        return (
           str +
-          `<div class="slide">
-            <img
-              src=${item.webformatURL.replace('_640', '_960')}
-              alt="${item.tags}">
-            <div class="overlay">
-              tags: ${item.tags}
-            </div>
-          </div>`,
-        ''
-      );
+          '<div class="slide">\n            <img\n              src='
+            .concat(item.webformatURL.replace('_640', '_960'), '\n              alt="')
+            .concat(
+              item.tags,
+              '">\n            <div class="overlay">\n              tags: '
+            )
+            .concat(item.tags, '\n            </div>\n          </div>')
+        );
+      }, '');
       slideshowDiv.className = 'slideshow';
       slideshowDiv.innerHTML = slides;
       // -> step 3: create the previous icon node
-      const prev = document.createElement('span');
+      var prev = document.createElement('span');
       prev.className = 'prev';
       prev.innerHTML = '&#10094;';
       // -> step 4: create the next icon node
-      const next = document.createElement('span');
+      var next = document.createElement('span');
       next.className = 'next';
       next.innerHTML = '&#10095;';
       // -> step 5: add the nodes created into the modal
@@ -239,14 +254,14 @@ function updatePage(term, from) {
 
       // Render the fake load more button
       if (!easterEggShown) {
-        const easterEgg = document.querySelector('.easter-egg');
+        var easterEgg = document.querySelector('.easter-egg');
         easterEgg.innerHTML = '<button>Load More</button>';
         document
           .querySelector('.easter-egg > button')
           .addEventListener('click', handleEasterEgg);
       }
     })
-    .catch(err => {
+    .catch(function(err) {
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
@@ -255,21 +270,25 @@ function updatePage(term, from) {
         promptMsg.className = 'prompt-color';
         promptMsg.textContent = 'Oops... Something went wrong. Please refresh the page.';
       }
+
       console.log(err, err.message);
     });
 }
 
 function handleSearch(e) {
-  const searchTerm = document.querySelector('input[type=text]').value;
-  const promptMsg = document.querySelector('.instruction > p');
+  var searchTerm = document.querySelector('input[type=text]').value;
+  var promptMsg = document.querySelector('.instruction > p');
+
   if (!searchTerm) {
     return;
   }
+
   if (searchTerm === currentSearchTerm) {
     promptMsg.className = 'prompt-color';
     promptMsg.textContent = 'Perhaps try another search term?';
     return;
   }
+
   if (
     e.key === 'Enter' ||
     e.target.matches('.search > button') ||

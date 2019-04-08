@@ -66,6 +66,10 @@ a {
 
 /* Shared styles */
 
+* {
+  outline: 1px solid green;
+} /* For testing purpose. Will be removed before deployment. */
+
 html {
   font-family: 'Open Sans', sans-serif;
   font-size: 10px;
@@ -111,6 +115,7 @@ header {
 .navbar-logo {
   font-size: 2.6rem;
   font-family: 'Carter One', sans-serif;
+  user-select: none;
 }
 
 .navbar-logo-bg {
@@ -331,6 +336,7 @@ h1 {
   padding: 5px 20px;
   box-shadow: 0 0 1px 0 rgba(32, 33, 36, 0.28);
   height: 36px;
+  background-color: #fff;
 }
 
 .easter-egg > p {
