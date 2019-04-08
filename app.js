@@ -52,11 +52,11 @@ function onImageClick() {
   const images = document.querySelectorAll('.gallery-item > img');
   images.forEach(image =>
     image.addEventListener('click', function(e) {
-      // Display the modal
+      // Display the modal.
       const modal = document.querySelector('.modal');
       modal.className = 'modal';
 
-      // Display the corresponding image
+      // Display the corresponding image.
       currentImageIndex = parseInt(this.dataset.index);
       showSlide();
     })
@@ -76,25 +76,26 @@ function handleSlideScroll(num) {
 }
 
 function handleArrowKey(e) {
-  const modal = document.querySelector('.modal');
+  var modal = document.querySelector('.modal');
   if (modal.className === 'modal') {
-    if (e.key === 'ArrowLeft') {
-      // Prevent horizontal scrolling
-      e.preventDefault();
+    if (e.key === 'ArrowLeft' || e.key === 'Left') {
+      e.preventDefault(); // Prevent horizontal scrolling.
       handleSlideScroll(-1);
     }
-    if (e.key === 'ArrowRight') {
-      // Prevent horizontal scrolling
-      e.preventDefault();
+
+    if (e.key === 'ArrowRight' || e.key === 'Right') {
+      e.preventDefault(); // Prevent horizontal scrolling.
       handleSlideScroll(1);
     }
   }
 }
 
 function handleEscKey(e) {
-  const modal = document.querySelector('.modal');
-  if (modal.className === 'modal' && e.key === 'Escape') {
-    handleLightboxClose();
+  var modal = document.querySelector('.modal');
+  if (modal.className === 'modal') {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      handleLightboxClose();
+    }
   }
 }
 
@@ -183,17 +184,17 @@ function updatePage(term, from) {
       );
       gallery.innerHTML = htmlInGallery;
 
-      // Render proper prompt message
+      // Render proper prompt message.
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
           'Nice search! Hope you enjoy the images below. Click an image to zoom in and scroll through. Or get new images with another search.';
       }
 
-      // Add event listener to show the modal and corresponding image on click
+      // Add event listener to show the modal and corresponding image on click.
       onImageClick();
 
-      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon
+      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
       const modal = document.querySelector('.modal');
       modal.innerHTML = '';
       // -> step 1: create the close icon node
@@ -231,13 +232,13 @@ function updatePage(term, from) {
       modal.appendChild(prev);
       modal.appendChild(next);
 
-      // Add event listeners to scroll through slides
+      // Add event listeners to scroll through slides.
       onSlideScroll();
 
-      // Add event listeners to close the modal image gallery (i.e. lightbox)
+      // Add event listeners to close the modal image gallery (i.e. lightbox).
       onLightboxClose();
 
-      // Render the fake load more button
+      // Render the fake load more button.
       if (!easterEggShown) {
         const easterEgg = document.querySelector('.easter-egg');
         easterEgg.innerHTML = '<button>Load More</button>';

@@ -83,15 +83,13 @@ function handleArrowKey(e) {
   var modal = document.querySelector('.modal');
 
   if (modal.className === 'modal') {
-    if (e.key === 'ArrowLeft') {
-      // Prevent horizontal scrolling
-      e.preventDefault();
+    if (e.key === 'ArrowLeft' || e.key === 'Left') {
+      e.preventDefault(); // Prevent horizontal scrolling.
       handleSlideScroll(-1);
     }
 
-    if (e.key === 'ArrowRight') {
-      // Prevent horizontal scrolling
-      e.preventDefault();
+    if (e.key === 'ArrowRight' || e.key === 'Right') {
+      e.preventDefault(); // Prevent horizontal scrolling.
       handleSlideScroll(1);
     }
   }
@@ -100,8 +98,10 @@ function handleArrowKey(e) {
 function handleEscKey(e) {
   var modal = document.querySelector('.modal');
 
-  if (modal.className === 'modal' && e.key === 'Escape') {
-    handleLightboxClose();
+  if (modal.className === 'modal') {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      handleLightboxClose();
+    }
   }
 }
 
