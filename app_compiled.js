@@ -14,9 +14,8 @@ if (easter) {
 // On page load, update the page with images fetched from API.
 var randomTerms = ['architecture', 'city', 'mountain', 'london'];
 var searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
-updatePage(searchTerm, '');
+updatePage(searchTerm, ''); // Add event listeners to the search box.
 
-// Add event listeners to the search box.
 var inputBox = document.querySelector('input[type=text]');
 var searchBtn = document.querySelector('.search > button');
 inputBox.addEventListener('keyup', handleSearch);
@@ -54,11 +53,11 @@ function onImageClick() {
   var images = document.querySelectorAll('.gallery-item > img');
   images.forEach(function(image) {
     return image.addEventListener('click', function(e) {
-      // Display the modal
+      // Display the modal.
       var modal = document.querySelector('.modal');
       modal.className = 'modal';
 
-      // Display the corresponding image
+      // Display the corresponding image.
       currentImageIndex = parseInt(this.dataset.index);
       showSlide();
     });
@@ -179,19 +178,20 @@ function updatePage(term, from) {
     .then(function(res) {
       // Handle the case when less than 9 images are fetched
       var results = res.hits;
-
       if (from === 'user' && results.length < 9) {
         promptMsg.className = '';
         promptMsg.textContent =
           'Oops... Less than 9 images found. Why not try another search term? Or you can just enjoy the existing images below. :)';
         return;
-      } // Render images
+      }
 
+      // Render images
       var gallery = document.querySelector('.gallery-container');
       var htmlInGallery = results.reduce(function(str, item, index) {
         return (
           str +
-          '<div class="gallery-item">\n            <img\n              src='
+          '<div class="gallery-item cell-'
+            .concat(index + 1, '">\n            <img\n              src=')
             .concat(item.webformatURL.replace('_640', '_340'), '\n              alt="')
             .concat(item.tags, '"\n              data-index=')
             .concat(index, '>\n          </div>')
@@ -199,17 +199,17 @@ function updatePage(term, from) {
       }, '');
       gallery.innerHTML = htmlInGallery;
 
-      // Render proper prompt message
+      // Render proper prompt message.
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
           'Nice search! Hope you enjoy the images below. Click an image to zoom in and scroll through. Or get new images with another search.';
       }
 
-      // Add event listener to show the modal and corresponding image on click
+      // Add event listener to show the modal and corresponding image on click.
       onImageClick();
 
-      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon
+      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
       var modal = document.querySelector('.modal');
       modal.innerHTML = '';
       // -> step 1: create the close icon node
@@ -246,13 +246,13 @@ function updatePage(term, from) {
       modal.appendChild(prev);
       modal.appendChild(next);
 
-      // Add event listeners to scroll through slides
+      // Add event listeners to scroll through slides.
       onSlideScroll();
 
-      // Add event listeners to close the modal image gallery (i.e. lightbox)
+      // Add event listeners to close the modal image gallery (i.e. lightbox).
       onLightboxClose();
 
-      // Render the fake load more button
+      // Render the fake load more button.
       if (!easterEggShown) {
         var easterEgg = document.querySelector('.easter-egg');
         easterEgg.innerHTML = '<button>Load More</button>';
@@ -261,7 +261,7 @@ function updatePage(term, from) {
           .addEventListener('click', handleEasterEgg);
       }
     })
-    .catch(function(err) {
+    ['catch'](function(err) {
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =

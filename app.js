@@ -76,7 +76,7 @@ function handleSlideScroll(num) {
 }
 
 function handleArrowKey(e) {
-  var modal = document.querySelector('.modal');
+  const modal = document.querySelector('.modal');
   if (modal.className === 'modal') {
     if (e.key === 'ArrowLeft' || e.key === 'Left') {
       e.preventDefault(); // Prevent horizontal scrolling.
@@ -91,7 +91,7 @@ function handleArrowKey(e) {
 }
 
 function handleEscKey(e) {
-  var modal = document.querySelector('.modal');
+  const modal = document.querySelector('.modal');
   if (modal.className === 'modal') {
     if (e.key === 'Escape' || e.key === 'Esc') {
       handleLightboxClose();
@@ -174,7 +174,7 @@ function updatePage(term, from) {
       const htmlInGallery = results.reduce(
         (str, item, index) =>
           str +
-          `<div class="gallery-item">
+          `<div class="gallery-item cell-${index + 1}">
             <img
               src=${item.webformatURL.replace('_640', '_340')}
               alt="${item.tags}"

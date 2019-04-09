@@ -7,23 +7,6 @@
   <title>Ninegram</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <script>
-    var appJS = document.createElement('script'); // Use var instead of const to support older browsers.
-    appJS.type = 'text/javascript';
-
-    // Since we aim to support the latest versions of Chrome, Safari, Firefox, and IE, the condition below will 1) allow Chrome, Safari and Firefox to load the js file (app.js) written in ES6 using arrow functions and template strings; 2) detect IE, add polyfill for unsupported features, and supply the compiled js file (app_compiled.js).
-    if (window.fetch && window.Promise) {
-      appJS.src = 'app.js';
-      document.head.appendChild(appJS);
-    } else {
-      var polyfillJS = document.createElement('script');
-      polyfillJS.crossorigin = 'anonymous';
-      polyfillJS.src = 'https://polyfill.io/v3/polyfill.min.js?flags=gated&features=es6%2CPromise%2Cfetch%2Cdefault%2CNodeList.prototype.forEach';
-      document.head.appendChild(polyfillJS);
-      appJS.src = 'app_compiled.js';
-      document.head.appendChild(appJS);
-    }
-  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -53,21 +36,39 @@
   </div>
   <div class="gallery-container">
     <!-- Keep the 9 repetitive divs below to contain gradient background with the effect of placehold  er images. Check '.gallery-item' in style.css for more. -->
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
-    <div class="gallery-item"></div>
+    <div class="gallery-item cell-1"></div>
+    <div class="gallery-item cell-2"></div>
+    <div class="gallery-item cell-3"></div>
+    <div class="gallery-item cell-4"></div>
+    <div class="gallery-item cell-5"></div>
+    <div class="gallery-item cell-6"></div>
+    <div class="gallery-item cell-7"></div>
+    <div class="gallery-item cell-8"></div>
+    <div class="gallery-item cell-9"></div>
   </div>
   <div class="modal no-display"></div>
   <div class="easter-egg"></div>
   <footer>
     A project by <a href="https://github.com/cherylz" target="_blank">Cheryl Zeng</a>. Image source: <a href="https://pixabay.com/" target="_blank">Pixabay</a>.
   </footer>
+  <script>
+    var appJS = document.createElement('script'); // Use var instead of const to support older browsers.
+    appJS.type = 'text/javascript';
+
+    // Since we aim to support the latest versions of Chrome, Safari, Firefox, and IE, the condition below will 1) allow Chrome, Safari and Firefox to load the js file (app.js) written in ES6 using arrow functions and template strings; 2) detect IE, add polyfill for unsupported features, and supply the compiled js file (app_compiled.js).
+    if (window.fetch && window.Promise) {
+      appJS.src = 'app.js';
+      document.head.appendChild(appJS);
+    } else {
+      var polyfillJS = document.createElement('script');
+      polyfillJS.crossorigin = 'anonymous';
+      polyfillJS.src = 'https://polyfill.io/v3/polyfill.min.js?flags=gated&features=es6%2CPromise%2Cfetch%2Cdefault%2CNodeList.prototype.forEach';
+      document.head.appendChild(polyfillJS);
+      appJS.src = 'app_compiled.js';
+      document.head.appendChild(appJS);
+    }
+  </script>
+
 </body>
 
 </html>
