@@ -1,6 +1,7 @@
+const objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
+let easterEggShown = false;
 let currentImageIndex;
 let currentSearchTerm;
-let easterEggShown = false;
 
 // If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
 // Must be executed before updatePage(searchTerm, '') because updatePage needs the updated value of easterEggShown.
@@ -49,7 +50,9 @@ function showSlide() {
 }
 
 function onImageClick() {
-  const images = document.querySelectorAll('.gallery-item > img');
+  const images = objectFitSupported
+    ? document.querySelectorAll('.gallery-item > img')
+    : document.querySelectorAll('.gallery-item-ie > img');
   images.forEach(image =>
     image.addEventListener('click', function(e) {
       // Display the modal.
@@ -171,10 +174,11 @@ function updatePage(term, from) {
 
       // Render images
       const gallery = document.querySelector('.gallery-container');
+      const galleryClass = objectFitSupported ? 'gallery-item' : 'gallery-item-ie';
       const htmlInGallery = results.reduce(
         (str, item, index) =>
           str +
-          `<div class="gallery-item cell-${index + 1}">
+          `<div class="${galleryClass} cell-${index + 1}">
             <img
               src=${item.webformatURL.replace('_640', '_340')}
               alt="${item.tags}"

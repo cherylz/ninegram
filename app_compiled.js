@@ -1,17 +1,17 @@
 'use strict';
 
-var currentImageIndex;
-var currentSearchTerm;
+var objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
 var easterEggShown = false;
-
-// If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
+var currentImageIndex;
+var currentSearchTerm; // If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
 // Must be executed before updatePage(searchTerm, '') because updatePage needs the updated value of easterEggShown.
+
 var easter = localStorage.getItem('easterEggShown');
+
 if (easter) {
   easterEggShown = true;
-}
+} // On page load, update the page with images fetched from API.
 
-// On page load, update the page with images fetched from API.
 var randomTerms = ['architecture', 'city', 'mountain', 'london'];
 var searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
 updatePage(searchTerm, ''); // Add event listeners to the search box.
@@ -19,9 +19,8 @@ updatePage(searchTerm, ''); // Add event listeners to the search box.
 var inputBox = document.querySelector('input[type=text]');
 var searchBtn = document.querySelector('.search > button');
 inputBox.addEventListener('keyup', handleSearch);
-searchBtn.addEventListener('click', handleSearch);
+searchBtn.addEventListener('click', handleSearch); // Make the navigation menu responsive to page scroll.
 
-// Make the navigation menu responsive to page scroll.
 window.addEventListener('scroll', function() {
   if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
     document.querySelector('header').style.height = '60px';
@@ -34,9 +33,7 @@ window.addEventListener('scroll', function() {
     document.querySelector('.search').style.height = '44px';
     document.querySelector('.search-input').style.height = '40px';
   }
-});
-
-// Below are the functions to be called.
+}); // Below are the functions to be called.
 
 function showSlide() {
   var slides = document.querySelectorAll('.slide');
@@ -50,14 +47,15 @@ function showSlide() {
 }
 
 function onImageClick() {
-  var images = document.querySelectorAll('.gallery-item > img');
+  var images = objectFitSupported
+    ? document.querySelectorAll('.gallery-item > img')
+    : document.querySelectorAll('.gallery-item-ie > img');
   images.forEach(function(image) {
     return image.addEventListener('click', function(e) {
       // Display the modal.
       var modal = document.querySelector('.modal');
-      modal.className = 'modal';
+      modal.className = 'modal'; // Display the corresponding image.
 
-      // Display the corresponding image.
       currentImageIndex = parseInt(this.dataset.index);
       showSlide();
     });
@@ -84,11 +82,13 @@ function handleArrowKey(e) {
   if (modal.className === 'modal') {
     if (e.key === 'ArrowLeft' || e.key === 'Left') {
       e.preventDefault(); // Prevent horizontal scrolling.
+
       handleSlideScroll(-1);
     }
 
     if (e.key === 'ArrowRight' || e.key === 'Right') {
       e.preventDefault(); // Prevent horizontal scrolling.
+
       handleSlideScroll(1);
     }
   }
@@ -178,45 +178,44 @@ function updatePage(term, from) {
     .then(function(res) {
       // Handle the case when less than 9 images are fetched
       var results = res.hits;
+
       if (from === 'user' && results.length < 9) {
         promptMsg.className = '';
         promptMsg.textContent =
           'Oops... Less than 9 images found. Why not try another search term? Or you can just enjoy the existing images below. :)';
         return;
-      }
+      } // Render images
 
-      // Render images
       var gallery = document.querySelector('.gallery-container');
+      var galleryClass = objectFitSupported ? 'gallery-item' : 'gallery-item-ie';
       var htmlInGallery = results.reduce(function(str, item, index) {
         return (
           str +
-          '<div class="gallery-item cell-'
+          '<div class="'
+            .concat(galleryClass, ' cell-')
             .concat(index + 1, '">\n            <img\n              src=')
             .concat(item.webformatURL.replace('_640', '_340'), '\n              alt="')
             .concat(item.tags, '"\n              data-index=')
             .concat(index, '>\n          </div>')
         );
       }, '');
-      gallery.innerHTML = htmlInGallery;
+      gallery.innerHTML = htmlInGallery; // Render proper prompt message.
 
-      // Render proper prompt message.
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
           'Nice search! Hope you enjoy the images below. Click an image to zoom in and scroll through. Or get new images with another search.';
-      }
+      } // Add event listener to show the modal and corresponding image on click.
 
-      // Add event listener to show the modal and corresponding image on click.
-      onImageClick();
+      onImageClick(); // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
 
-      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
       var modal = document.querySelector('.modal');
-      modal.innerHTML = '';
-      // -> step 1: create the close icon node
+      modal.innerHTML = ''; // -> step 1: create the close icon node
+
       var closeIcon = document.createElement('span');
       closeIcon.className = 'close';
-      closeIcon.innerHTML = '&times;';
-      // -> step 2: create the slideshow node
+      closeIcon.innerHTML = '&times;'; // -> step 2: create the slideshow node
+
       var slideshowDiv = document.createElement('div');
       var slides = results.reduce(function(str, item, index) {
         return (
@@ -231,28 +230,25 @@ function updatePage(term, from) {
         );
       }, '');
       slideshowDiv.className = 'slideshow';
-      slideshowDiv.innerHTML = slides;
-      // -> step 3: create the previous icon node
+      slideshowDiv.innerHTML = slides; // -> step 3: create the previous icon node
+
       var prev = document.createElement('span');
       prev.className = 'prev';
-      prev.innerHTML = '&#10094;';
-      // -> step 4: create the next icon node
+      prev.innerHTML = '&#10094;'; // -> step 4: create the next icon node
+
       var next = document.createElement('span');
       next.className = 'next';
-      next.innerHTML = '&#10095;';
-      // -> step 5: add the nodes created into the modal
+      next.innerHTML = '&#10095;'; // -> step 5: add the nodes created into the modal
+
       modal.appendChild(closeIcon);
       modal.appendChild(slideshowDiv);
       modal.appendChild(prev);
-      modal.appendChild(next);
+      modal.appendChild(next); // Add event listeners to scroll through slides.
 
-      // Add event listeners to scroll through slides.
-      onSlideScroll();
+      onSlideScroll(); // Add event listeners to close the modal image gallery (i.e. lightbox).
 
-      // Add event listeners to close the modal image gallery (i.e. lightbox).
-      onLightboxClose();
+      onLightboxClose(); // Render the fake load more button.
 
-      // Render the fake load more button.
       if (!easterEggShown) {
         var easterEgg = document.querySelector('.easter-egg');
         easterEgg.innerHTML = '<button>Load More</button>';
