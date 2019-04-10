@@ -1,6 +1,7 @@
 const objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
 const promptMsg = document.querySelector('.instruction > p');
 let easterEggShown = false;
+let scrolling = false;
 let currentImageIndex;
 let currentSearchTerm;
 
@@ -23,19 +24,23 @@ inputBox.addEventListener('keyup', handleSearch);
 searchBtn.addEventListener('click', handleSearch);
 
 // Make the navigation menu responsive to page scroll.
-window.addEventListener('scroll', function() {
-  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-    document.querySelector('header').style.height = '60px';
-    document.querySelector('.navbar').style.height = '60px';
-    document.querySelector('.search').style.height = '35px';
-    document.querySelector('.search-input').style.height = '33px';
-  } else {
-    document.querySelector('header').style.height = '80px';
-    document.querySelector('.navbar').style.height = '80px';
-    document.querySelector('.search').style.height = '44px';
-    document.querySelector('.search-input').style.height = '40px';
+window.addEventListener('scroll', () => (scrolling = true));
+setInterval(() => {
+  if (scrolling) {
+    scrolling = false;
+    if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+      document.querySelector('header').style.height = '60px';
+      document.querySelector('.navbar').style.height = '60px';
+      document.querySelector('.search').style.height = '35px';
+      document.querySelector('.search-input').style.height = '33px';
+    } else {
+      document.querySelector('header').style.height = '80px';
+      document.querySelector('.navbar').style.height = '80px';
+      document.querySelector('.search').style.height = '44px';
+      document.querySelector('.search-input').style.height = '40px';
+    }
   }
-});
+}, 200);
 
 // Below are the functions to be called.
 

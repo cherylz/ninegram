@@ -3,6 +3,7 @@
 var objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
 var promptMsg = document.querySelector('.instruction > p');
 var easterEggShown = false;
+var scrolling = false;
 var currentImageIndex;
 var currentSearchTerm; // If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
 // Must be executed before updatePage(searchTerm, '') because updatePage needs the updated value of easterEggShown.
@@ -23,18 +24,25 @@ inputBox.addEventListener('keyup', handleSearch);
 searchBtn.addEventListener('click', handleSearch); // Make the navigation menu responsive to page scroll.
 
 window.addEventListener('scroll', function() {
-  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-    document.querySelector('header').style.height = '60px';
-    document.querySelector('.navbar').style.height = '60px';
-    document.querySelector('.search').style.height = '35px';
-    document.querySelector('.search-input').style.height = '33px';
-  } else {
-    document.querySelector('header').style.height = '80px';
-    document.querySelector('.navbar').style.height = '80px';
-    document.querySelector('.search').style.height = '44px';
-    document.querySelector('.search-input').style.height = '40px';
+  return (scrolling = true);
+});
+setInterval(function() {
+  if (scrolling) {
+    scrolling = false;
+
+    if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+      document.querySelector('header').style.height = '60px';
+      document.querySelector('.navbar').style.height = '60px';
+      document.querySelector('.search').style.height = '35px';
+      document.querySelector('.search-input').style.height = '33px';
+    } else {
+      document.querySelector('header').style.height = '80px';
+      document.querySelector('.navbar').style.height = '80px';
+      document.querySelector('.search').style.height = '44px';
+      document.querySelector('.search-input').style.height = '40px';
+    }
   }
-}); // Below are the functions to be called.
+}, 200); // Below are the functions to be called.
 
 function showSlide() {
   var slides = document.querySelectorAll('.slide');
