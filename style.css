@@ -77,6 +77,11 @@ html {
   background-color: #f7f7f7;
 }
 
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -154,20 +159,30 @@ header {
   width: 90%;
   height: 40px;
   font-size: 1.6rem;
-  font-family: 'Open Sans', serif;
+  font-family: 'Open Sans', sans-serif;
   transition: 0.4s;
 }
 
 .search > button {
+  padding-left: 10px;
   padding-right: 10px;
+  outline: 2px solid pink;
+}
+
+/* Style <div id="content-container"> */
+
+#content-container {
+  padding-top: 80px;
+  padding-bottom: 100px;
 }
 
 /* Style <div class="instruction"> */
 
 .instruction {
   max-width: 760px;
-  margin: 80px auto 40px;
+  margin: 0 auto;
   padding-top: 40px;
+  padding-bottom: 40px;
   text-align: center;
 }
 
@@ -193,6 +208,12 @@ h1 {
 
 .instruction > p.prompt-color {
   color: #604c8d;
+}
+
+.instruction > p.short {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
 }
 
 /* Style <div class="gallery-container"> */
@@ -387,7 +408,8 @@ h1 {
 .prev,
 .next {
   position: absolute;
-  top: 48%;
+  top: 50%;
+  transform: translate(0, -50%);
   color: #fff;
   font-weight: bold;
   font-size: 3rem;
@@ -442,7 +464,11 @@ h1 {
 /* Style <footer> */
 
 footer {
-  padding: 40px 20px 60px 20px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  padding: 40px 20px 40px;
   font-size: 1.4rem;
   text-align: center;
   background-color: #fff;
@@ -479,6 +505,8 @@ footer {
 
   .gallery-container {
     grid-gap: 5px;
+    -ms-grid-columns: 1fr 5px 1fr 5px 1fr;
+    -ms-grid-rows: auto 5px auto 5px auto;
   }
 
   .gallery-item > img {
@@ -499,10 +527,103 @@ footer {
   }
 
   h1 {
-    font-size: 3.2rem;
+    font-size: 2.6rem;
   }
 
   .instruction > p {
     font-size: 1.4rem;
+  }
+
+  .search-input {
+    width: 78%;
+    font-size: 1.4rem;
+    margin-left: 10px;
+  }
+
+  .gallery-container {
+    -ms-grid-columns: 1fr;
+    -ms-grid-rows: auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i';
+  }
+
+  .cell-1 {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+  }
+
+  .cell-2 {
+    -ms-grid-row: 3;
+    -ms-grid-column: 1;
+  }
+
+  .cell-3 {
+    -ms-grid-row: 5;
+    -ms-grid-column: 1;
+  }
+
+  .cell-4 {
+    -ms-grid-row: 7;
+    -ms-grid-column: 1;
+  }
+
+  .cell-5 {
+    -ms-grid-row: 9;
+    -ms-grid-column: 1;
+  }
+
+  .cell-6 {
+    -ms-grid-row: 11;
+    -ms-grid-column: 1;
+  }
+
+  .cell-7 {
+    -ms-grid-row: 13;
+    -ms-grid-column: 1;
+  }
+
+  .cell-8 {
+    -ms-grid-row: 15;
+    -ms-grid-column: 1;
+  }
+
+  .cell-9 {
+    -ms-grid-row: 17;
+    -ms-grid-column: 1;
+  }
+
+  .prev {
+    left: 2%;
+    padding: 1px;
+  }
+
+  .next {
+    right: 2%;
+    padding: 1px;
+  }
+
+  .overlay {
+    font-size: 1.2rem;
+    padding: 10px;
+  }
+
+  .easter-egg > button {
+    font-size: 1.4rem;
+    height: 30px;
+  }
+
+  .easter-egg > p {
+    font-size: 1.2rem;
+    height: 30px;
+  }
+
+  footer {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 319.98px) {
+  html {
+    font-size: 8px;
   }
 }

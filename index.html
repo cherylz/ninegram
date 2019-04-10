@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Ninegram</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -30,24 +30,26 @@
       </div>
     </div>
   </header>
-  <div class="instruction">
-    <h1>Welcome to Ninegram.</h1>
-    <p>Search with keyword(s) to get 9 inspiring images. You can also click an existing image below to zoom in and scroll through. Have fun!</p>
+  <div id="content-container">
+    <div class="instruction">
+      <h1>Welcome to Ninegram.</h1>
+      <p>Search with keyword(s) to get 9 inspiring images, or click an existing image below to zoom in and scroll through. Have fun!</p>
+    </div>
+    <div class="gallery-container">
+      <!-- Keep the 9 repetitive divs below to contain gradient background with the effect of placehold  er images. Check '.gallery-item' in style.css for more. -->
+      <div class="gallery-item cell-1"></div>
+      <div class="gallery-item cell-2"></div>
+      <div class="gallery-item cell-3"></div>
+      <div class="gallery-item cell-4"></div>
+      <div class="gallery-item cell-5"></div>
+      <div class="gallery-item cell-6"></div>
+      <div class="gallery-item cell-7"></div>
+      <div class="gallery-item cell-8"></div>
+      <div class="gallery-item cell-9"></div>
+    </div>
+    <div class="modal no-display"></div>
+    <div class="easter-egg"></div>
   </div>
-  <div class="gallery-container">
-    <!-- Keep the 9 repetitive divs below to contain gradient background with the effect of placehold  er images. Check '.gallery-item' in style.css for more. -->
-    <div class="gallery-item cell-1"></div>
-    <div class="gallery-item cell-2"></div>
-    <div class="gallery-item cell-3"></div>
-    <div class="gallery-item cell-4"></div>
-    <div class="gallery-item cell-5"></div>
-    <div class="gallery-item cell-6"></div>
-    <div class="gallery-item cell-7"></div>
-    <div class="gallery-item cell-8"></div>
-    <div class="gallery-item cell-9"></div>
-  </div>
-  <div class="modal no-display"></div>
-  <div class="easter-egg"></div>
   <footer>
     A project by <a href="https://github.com/cherylz" target="_blank">Cheryl Zeng</a>. Image source: <a href="https://pixabay.com/" target="_blank">Pixabay</a>.
   </footer>

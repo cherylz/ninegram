@@ -1,6 +1,7 @@
 'use strict';
 
 var objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
+var promptMsg = document.querySelector('.instruction > p');
 var easterEggShown = false;
 var currentImageIndex;
 var currentSearchTerm; // If the easter egg was shown to the user during previous page visit(s), then it won't be displayed.
@@ -10,9 +11,9 @@ var easter = localStorage.getItem('easterEggShown');
 
 if (easter) {
   easterEggShown = true;
-} // On page load, update the page with images fetched from API.
+} // On page load, update the page with images fetched from API and add event listeners.
 
-var randomTerms = ['architecture', 'city', 'mountain', 'london'];
+var randomTerms = ['architecture', 'city', 'mountain', 'london', 'moon'];
 var searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
 updatePage(searchTerm, ''); // Add event listeners to the search box.
 
@@ -105,8 +106,11 @@ function handleEscKey(e) {
 }
 
 function handleLightboxClose() {
-  var modal = document.querySelector('.modal');
-  modal.className = 'modal no-display';
+  // Update the prompt message.
+  promptMsg.className = 'short';
+  promptMsg.textContent = 'Hope you enjoyed the images!'; // Close the lightbox.
+
+  document.querySelector('.modal').className = 'modal no-display';
 }
 
 function decideWhetherToCloseLightbox(e) {
@@ -146,10 +150,8 @@ function updatePage(term, from) {
     document.querySelector('.easter-egg').innerHTML = '';
   }
 
-  var promptMsg = document.querySelector('.instruction > p');
-
   if (from === 'user') {
-    promptMsg.className = 'prompt-color';
+    promptMsg.className = 'prompt-color short';
     promptMsg.textContent = 'Searching...';
   }
 
@@ -167,7 +169,7 @@ function updatePage(term, from) {
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
-          'Oops... Something went wrong. Perhaps try another search term? Or you can just enjoy the existing images below. :)';
+          'Oops... Something went wrong. Perhaps try another search term, or just enjoy the existing images below. :)';
       } else {
         promptMsg.className = 'prompt-color';
         promptMsg.textContent = 'Oops... Something went wrong. Please refresh the page.';
@@ -182,7 +184,7 @@ function updatePage(term, from) {
       if (from === 'user' && results.length < 9) {
         promptMsg.className = '';
         promptMsg.textContent =
-          'Oops... Less than 9 images found. Why not try another search term? Or you can just enjoy the existing images below. :)';
+          'Oops... Less than 9 images found. Why not try another search term? You can also just enjoy the existing images below. :)';
         return;
       } // Render images
 
@@ -204,7 +206,7 @@ function updatePage(term, from) {
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
-          'Nice search! Hope you enjoy the images below. Click an image to zoom in and scroll through. Or get new images with another search.';
+          'Nice search! Click an image to zoom in and scroll through, or get new images with another search.';
       } // Add event listener to show the modal and corresponding image on click.
 
       onImageClick(); // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
@@ -263,7 +265,7 @@ function updatePage(term, from) {
       if (from === 'user') {
         promptMsg.className = '';
         promptMsg.textContent =
-          'Oops... Something went wrong. Perhaps try another search term? Or you can just enjoy the existing images below. :)';
+          'Oops... Something went wrong. Perhaps try another search term, or just enjoy the existing images below. :)';
       } else {
         promptMsg.className = 'prompt-color';
         promptMsg.textContent = 'Oops... Something went wrong. Please refresh the page.';
@@ -275,14 +277,13 @@ function updatePage(term, from) {
 
 function handleSearch(e) {
   var searchTerm = document.querySelector('input[type=text]').value;
-  var promptMsg = document.querySelector('.instruction > p');
 
   if (!searchTerm) {
     return;
   }
 
   if (searchTerm === currentSearchTerm) {
-    promptMsg.className = 'prompt-color';
+    promptMsg.className = 'prompt-color short';
     promptMsg.textContent = 'Perhaps try another search term?';
     return;
   }
