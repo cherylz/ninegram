@@ -158,7 +158,7 @@ function updatePage(term, from) {
   fetch(
     'https://pixabay.com/api/?key=11381563-185a2b7b89dac3ac1a22ea903&q='.concat(
       term,
-      '&image_type=photo&min_width=200&min_height=200&per_page=9&editors_choice=true&safesearch=true'
+      '&image_type=photo&min_width=295&min_height=295&per_page=9&editors_choice=true&safesearch=true'
     )
   )
     .then(function(res) {
@@ -181,11 +181,17 @@ function updatePage(term, from) {
       // Handle the case when less than 9 images are fetched
       var results = res.hits;
 
-      if (from === 'user' && results.length < 9) {
-        promptMsg.className = '';
-        promptMsg.textContent =
-          'Oops... Less than 9 images found. Why not try another search term? You can also just enjoy the existing images below. :)';
-        return;
+      if (results.length < 9) {
+        if (from === 'user') {
+          promptMsg.className = '';
+          promptMsg.textContent =
+            'Oops... Less than 9 images found. Why not try another search term? You can also just enjoy the existing images below. :)';
+          return;
+        } else {
+          updatePage('lights', ''); // Handle a rare case: the initial search on page load got less than 9 images to render.
+
+          return;
+        }
       } // Render images
 
       var gallery = document.querySelector('.gallery-container');
@@ -282,18 +288,18 @@ function handleSearch(e) {
     return;
   }
 
-  if (searchTerm === currentSearchTerm) {
-    promptMsg.className = 'prompt-color short';
-    promptMsg.textContent = 'Perhaps try another search term?';
-    return;
-  }
-
   if (
     e.key === 'Enter' ||
     e.target.matches('.search > button') ||
     e.target.parentNode.matches('.search > button') ||
     e.target.parentNode.parentNode.matches('.search > button')
   ) {
+    if (searchTerm === currentSearchTerm) {
+      promptMsg.className = 'prompt-color short';
+      promptMsg.textContent = 'Perhaps try another search term?';
+      return;
+    }
+
     if (searchTerm.length <= 100) {
       updatePage(searchTerm, 'user');
       currentSearchTerm = searchTerm;
