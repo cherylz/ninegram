@@ -207,13 +207,15 @@ function updatePage(term, from) {
       closeIcon.innerHTML = '&times;';
       // -> step 2: create the slideshow node
       const slideshowDiv = document.createElement('div');
+      const slideImgClass = objectFitSupported ? 'slide-img' : 'slide-img-ie';
       const slides = results.reduce(
         (str, item, index) =>
           str +
           `<div class="slide">
             <img
               src=${item.webformatURL.replace('_640', '_960')}
-              alt="${item.tags}">
+              alt="${item.tags}"
+              class=${slideImgClass}>
             <div class="overlay">
               tags: ${item.tags}
             </div>

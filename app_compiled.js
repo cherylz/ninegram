@@ -217,14 +217,16 @@ function updatePage(term, from) {
       closeIcon.innerHTML = '&times;'; // -> step 2: create the slideshow node
 
       var slideshowDiv = document.createElement('div');
+      var slideImgClass = objectFitSupported ? 'slide-img' : 'slide-img-ie';
       var slides = results.reduce(function(str, item, index) {
         return (
           str +
           '<div class="slide">\n            <img\n              src='
             .concat(item.webformatURL.replace('_640', '_960'), '\n              alt="')
+            .concat(item.tags, '"\n              class=')
             .concat(
-              item.tags,
-              '">\n            <div class="overlay">\n              tags: '
+              slideImgClass,
+              '>\n            <div class="overlay">\n              tags: '
             )
             .concat(item.tags, '\n            </div>\n          </div>')
         );
