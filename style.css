@@ -86,7 +86,7 @@ a:hover {
   text-decoration: underline;
 }
 
-button:hover {
+button {
   cursor: pointer;
 }
 
@@ -141,7 +141,7 @@ header {
   border-radius: 24px;
   border: 1px solid #dfe1e5;
   display: flex;
-  position: relative;
+  justify-content: space-between;
   transition: 0.4s;
 }
 
@@ -150,22 +150,25 @@ header {
   border: none;
   padding: 0;
   background: transparent;
-  top: 1px;
+  height: 44px;
   position: relative;
 }
 
 .search-input {
+  outline: 2px solid pink; /* For testing purpose. Will be removed before deployment. */
+  top: -1px;
   margin-left: 18px;
   width: 90%;
-  height: 40px;
   font-size: 1.6rem;
   font-family: 'Open Sans', sans-serif;
   transition: 0.4s;
 }
 
 .search > button {
-  padding-left: 10px;
-  padding-right: 10px;
+  top: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 7px;
   outline: 2px solid pink; /* For testing purpose. Will be removed before deployment. */
 }
 
@@ -442,7 +445,6 @@ h1 {
   font-size: 1.6rem;
   font-family: 'Open Sans', sans-serif;
   color: #323232;
-  cursor: pointer;
   border: 1px solid #fff;
   display: flex;
   outline: 0;
@@ -535,7 +537,6 @@ footer {
   }
 
   .search-input {
-    width: 78%;
     font-size: 1.4rem;
     margin-left: 10px;
   }

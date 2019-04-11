@@ -47,7 +47,12 @@
       <div class="gallery-item cell-8"></div>
       <div class="gallery-item cell-9"></div>
     </div>
-    <div class="modal no-display"></div>
+    <div class="modal no-display">
+      <span class="close">&times;</span>
+      <span class="prev">&#10094;</span>
+      <span class="next">&#10095;</span>
+      <div class="slideshow"></div>
+    </div>
     <div class="easter-egg"></div>
   </div>
   <footer>
@@ -64,7 +69,7 @@
     } else {
       var polyfillJS = document.createElement('script');
       polyfillJS.crossorigin = 'anonymous';
-      polyfillJS.src = 'https://polyfill.io/v3/polyfill.min.js?flags=gated&features=es6%2CPromise%2Cfetch%2Cdefault%2CNodeList.prototype.forEach';
+      polyfillJS.src = 'https://polyfill.io/v3/polyfill.min.js?flags=gated&features=es6%2Cdefault%2CElement.prototype.matches%2CElement.prototype.closest%2CPromise%2Cfetch%2CNodeList.prototype.forEach';
       document.head.appendChild(polyfillJS);
       appJS.src = 'app_compiled.js';
       document.head.appendChild(appJS);

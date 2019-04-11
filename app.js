@@ -1,5 +1,6 @@
 const objectFitSupported = document.body.style.objectFit !== undefined ? true : false;
 const promptMsg = document.querySelector('.instruction > p');
+const modal = document.querySelector('.modal');
 let easterEggShown = false;
 let scrolling = false;
 let currentImageIndex;
@@ -17,11 +18,67 @@ const randomTerms = ['architecture', 'city', 'mountain', 'london', 'moon'];
 const searchTerm = randomTerms[Math.floor(Math.random() * randomTerms.length)];
 updatePage(searchTerm, '');
 
-// Add event listeners to the search box.
+// Handle the keyup event when user pressed the enter key in the search box.
 const inputBox = document.querySelector('input[type=text]');
-const searchBtn = document.querySelector('.search > button');
-inputBox.addEventListener('keyup', handleSearch);
-searchBtn.addEventListener('click', handleSearch);
+inputBox.addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') {
+    handleSearch();
+  }
+});
+
+// Use event delegation to handle click events especially the events of dynamically rendered elements.
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.search > button')) {
+    handleSearch();
+  }
+
+  if (e.target.matches('.gallery-img')) {
+    // Display the modal.
+    modal.className = 'modal';
+    // Display the corresponding image.
+    currentImageIndex = parseInt(e.target.dataset.index);
+    showSlide();
+  }
+
+  if (e.target.matches('.prev')) {
+    handleSlideScroll(-1);
+  }
+
+  if (e.target.matches('.next')) {
+    handleSlideScroll(1);
+  }
+
+  if (e.target.matches('.close')) {
+    handleLightboxClose();
+  }
+
+  if (!e.target.matches('.gallery-img') && modal.className === 'modal') {
+    decideWhetherToCloseLightbox(e);
+  }
+
+  if (e.target.matches('.easter-egg > button')) {
+    handleEasterEgg();
+  }
+});
+
+// Use event delegation to handle keydown events in the lightbox view.
+document.addEventListener('keydown', function(e) {
+  if (modal.className === 'modal') {
+    if (e.key === 'ArrowLeft' || e.key === 'Left') {
+      e.preventDefault(); // Prevent horizontal scrolling.
+      handleSlideScroll(-1);
+    }
+
+    if (e.key === 'ArrowRight' || e.key === 'Right') {
+      e.preventDefault(); // Prevent horizontal scrolling.
+      handleSlideScroll(1);
+    }
+
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      handleLightboxClose();
+    }
+  }
+});
 
 // Make the navigation menu responsive to page scroll.
 window.addEventListener('scroll', () => (scrolling = true));
@@ -32,12 +89,14 @@ setInterval(() => {
       document.querySelector('header').style.height = '60px';
       document.querySelector('.navbar').style.height = '60px';
       document.querySelector('.search').style.height = '35px';
-      document.querySelector('.search-input').style.height = '33px';
+      document.querySelector('.search-input').style.height = '35px';
+      document.querySelector('.search > button').style.height = '35px';
     } else {
       document.querySelector('header').style.height = '80px';
       document.querySelector('.navbar').style.height = '80px';
       document.querySelector('.search').style.height = '44px';
-      document.querySelector('.search-input').style.height = '40px';
+      document.querySelector('.search-input').style.height = '44px';
+      document.querySelector('.search > button').style.height = '44px';
     }
   }
 }, 200);
@@ -55,23 +114,6 @@ function showSlide() {
   });
 }
 
-function onImageClick() {
-  const images = objectFitSupported
-    ? document.querySelectorAll('.gallery-item > img')
-    : document.querySelectorAll('.gallery-item-ie > img');
-  images.forEach(image =>
-    image.addEventListener('click', function(e) {
-      // Display the modal.
-      const modal = document.querySelector('.modal');
-      modal.className = 'modal';
-
-      // Display the corresponding image.
-      currentImageIndex = parseInt(this.dataset.index);
-      showSlide();
-    })
-  );
-}
-
 function handleSlideScroll(num) {
   const slides = document.querySelectorAll('.slide');
   if (currentImageIndex + num >= slides.length) {
@@ -82,30 +124,6 @@ function handleSlideScroll(num) {
     currentImageIndex += num;
   }
   showSlide();
-}
-
-function handleArrowKey(e) {
-  const modal = document.querySelector('.modal');
-  if (modal.className === 'modal') {
-    if (e.key === 'ArrowLeft' || e.key === 'Left') {
-      e.preventDefault(); // Prevent horizontal scrolling.
-      handleSlideScroll(-1);
-    }
-
-    if (e.key === 'ArrowRight' || e.key === 'Right') {
-      e.preventDefault(); // Prevent horizontal scrolling.
-      handleSlideScroll(1);
-    }
-  }
-}
-
-function handleEscKey(e) {
-  const modal = document.querySelector('.modal');
-  if (modal.className === 'modal') {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-      handleLightboxClose();
-    }
-  }
 }
 
 function handleLightboxClose() {
@@ -128,20 +146,6 @@ function decideWhetherToCloseLightbox(e) {
   ) {
     handleLightboxClose();
   }
-}
-
-function onSlideScroll() {
-  document.querySelector('.prev').addEventListener('click', () => handleSlideScroll(-1));
-  document.querySelector('.next').addEventListener('click', () => handleSlideScroll(1));
-  document.addEventListener('keydown', handleArrowKey);
-}
-
-function onLightboxClose() {
-  document.querySelector('.close').addEventListener('click', handleLightboxClose);
-  document.addEventListener('keydown', handleEscKey);
-  document
-    .querySelector('.modal')
-    .addEventListener('click', decideWhetherToCloseLightbox);
 }
 
 function updatePage(term, from) {
@@ -196,7 +200,8 @@ function updatePage(term, from) {
             <img
               src=${item.webformatURL.replace('_640', '_340')}
               alt="${item.tags}"
-              data-index=${index}>
+              data-index=${index}
+              class="gallery-img">
           </div>`,
         ''
       );
@@ -209,20 +214,11 @@ function updatePage(term, from) {
           'Nice search! Click an image to zoom in and scroll through, or get new images with another search.';
       }
 
-      // Add event listener to show the modal and corresponding image on click.
-      onImageClick();
-
-      // Update content inside the modal. the content includes a close icon, slideshow, a previous icon and a next icon.
-      const modal = document.querySelector('.modal');
-      modal.innerHTML = '';
-      // -> step 1: create the close icon node
-      const closeIcon = document.createElement('span');
-      closeIcon.className = 'close';
-      closeIcon.innerHTML = '&times;';
-      // -> step 2: create the slideshow node
-      const slideshowDiv = document.createElement('div');
+      // Update content inside the slideshow.
+      const slideshow = document.querySelector('.slideshow');
+      slideshow.innerHTML = '';
       const slideImgClass = objectFitSupported ? 'slide-img' : 'slide-img-ie';
-      const slides = results.reduce(
+      const htmlInSlideshow = results.reduce(
         (str, item, index) =>
           str +
           `<div class="slide">
@@ -236,35 +232,11 @@ function updatePage(term, from) {
           </div>`,
         ''
       );
-      slideshowDiv.className = 'slideshow';
-      slideshowDiv.innerHTML = slides;
-      // -> step 3: create the previous icon node
-      const prev = document.createElement('span');
-      prev.className = 'prev';
-      prev.innerHTML = '&#10094;';
-      // -> step 4: create the next icon node
-      const next = document.createElement('span');
-      next.className = 'next';
-      next.innerHTML = '&#10095;';
-      // -> step 5: add the nodes created into the modal
-      modal.appendChild(closeIcon);
-      modal.appendChild(slideshowDiv);
-      modal.appendChild(prev);
-      modal.appendChild(next);
-
-      // Add event listeners to scroll through slides.
-      onSlideScroll();
-
-      // Add event listeners to close the modal image gallery (i.e. lightbox).
-      onLightboxClose();
+      slideshow.innerHTML = htmlInSlideshow;
 
       // Render the fake load more button.
       if (!easterEggShown) {
-        const easterEgg = document.querySelector('.easter-egg');
-        easterEgg.innerHTML = '<button>Load More</button>';
-        document
-          .querySelector('.easter-egg > button')
-          .addEventListener('click', handleEasterEgg);
+        document.querySelector('.easter-egg').innerHTML = '<button>Load More</button>';
       }
     })
     .catch(err => {
@@ -287,25 +259,19 @@ function handleSearch(e) {
     return;
   }
 
-  if (
-    e.key === 'Enter' ||
-    e.target.matches('.search > button') ||
-    e.target.parentNode.matches('.search > button') ||
-    e.target.parentNode.parentNode.matches('.search > button')
-  ) {
-    if (searchTerm === currentSearchTerm) {
-      promptMsg.className = 'prompt-color short';
-      promptMsg.textContent = 'Perhaps try another search term?';
-      return;
-    }
-    if (searchTerm.length <= 100) {
-      updatePage(searchTerm, 'user');
-      currentSearchTerm = searchTerm;
-    } else {
-      promptMsg.className = 'prompt-color';
-      promptMsg.textContent =
-        'Oops...The search term you entered is a bit long. Why not try a shorter one? :)';
-    }
+  if (searchTerm === currentSearchTerm) {
+    promptMsg.className = 'prompt-color short';
+    promptMsg.textContent = 'Perhaps try another search term?';
+    return;
+  }
+
+  if (searchTerm.length <= 100) {
+    currentSearchTerm = searchTerm;
+    updatePage(searchTerm, 'user');
+  } else {
+    promptMsg.className = 'prompt-color';
+    promptMsg.textContent =
+      'Oops...The search term you entered is a bit long. Why not try a shorter one? :)';
   }
 }
 
