@@ -221,7 +221,8 @@ function UpdatePage(result) {
   if (easterEggShown) {
     document.querySelector('.easter-egg').innerHTML = '';
   } else {
-    document.querySelector('.easter-egg').innerHTML = '<button>Load More</button>';
+    document.querySelector('.easter-egg').innerHTML =
+      '<button aria-label="Load more images">Load More</button>';
   }
 }
 
