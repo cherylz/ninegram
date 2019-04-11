@@ -543,8 +543,7 @@ footer {
 
   .gallery-container {
     -ms-grid-columns: 1fr;
-    -ms-grid-rows: auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px
-      auto;
+    -ms-grid-rows: auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto 5px auto;
     grid-template-columns: 1fr;
     grid-template-areas: 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i';
   }
