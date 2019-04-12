@@ -94,16 +94,15 @@ What I might do differently with additional time:
 
 ## In Case You Want to Know More
 
-##### Code I'm Particularly Proud of
+Code I'm Particularly Proud of:
 
-I'm happy with the code I wrote with attention to detail, quality and UX. For example, I used debouncing to handle `scroll` event, handled non 200-299 responses when using `Fetch`, and used event delegation to handle `click` events. More importantly, I'm always looking for improvement. So if you have feedback on how to make the code better, I'd appreciate it.
+- I'm happy with the code I wrote with attention to detail, quality and UX. For example, I used debouncing to handle `scroll` event, handled non 200-299 responses when using `Fetch`, and used event delegation to handle `click` events. More importantly, I'm always looking for improvement. So if you have feedback on how to make the code better, I'd appreciate it.
+- In particular, I'm proud of how I maintained a similar level of experience for IE11 users and how I delivered a good experience for modern browsers (yes, I also care about how the browser feels). Check _To support IE11_ in [Technical Choices](https://github.com/cherylz/ninegram#technical-chocies) for elaboration.
 
-In particular, I'm proud of how I maintained a similar level of experience for IE11 users and how I delivered a good experience for modern browsers (yes, I also care about how the browser feels). Check _To support IE11_ in [Technical Choices](https://github.com/cherylz/ninegram#technical-chocies) for elaboration.
-
-##### Happy Scores by [Google Lighthouse](https://developers.google.com/web/tools/lighthouse/)
+Happy Scores by [Google Lighthouse](https://developers.google.com/web/tools/lighthouse/):
 
 ![Scores by Google Lighthouse](https://i.ibb.co/3dHB6G8/Scores-by-Google-Lighthouse.png)
 
-##### Wireframe of Ninegram
+Wireframe of Ninegram:
 
 ![Wireframe of Ninegram](https://i.ibb.co/N7d5DDn/wireframe.jpg)
