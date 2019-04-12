@@ -203,9 +203,11 @@ function UpdatePage(result) {
       `<div class="slide">
         <img
           src=${item.webformatURL.replace('_640', '_960')}
-          srcset="${item.webformatURL.replace('_640', '_340')} 340w, ${
-        item.webformatURL
-      } 640w, ${item.webformatURL.replace('_640', '_960')} 960w"
+          srcset="
+            ${item.webformatURL.replace('_640', '_340')} 340w,
+            ${item.webformatURL} 640w,
+            ${item.webformatURL.replace('_640', '_960')} 960w
+          "
           sizes="80vw"
           alt="${item.tags}"
           class=${slideImgClass}>
