@@ -88,7 +88,7 @@ What I might do differently with additional time:
 
 - Implement the lazy loading technique to defer loading the images that are not visible to the user. If it proves to save bytes on page load and deliver a better UX, I'll go with it.
 - Try an IE friendly CSS framework to facilitate styling in IE11 and save time for developers who want to work on the app in the future.
-- Find an integrated way to support IE11. The current approach described in [Technical Choices](https://github.com/cherylz/ninegram#technical-chocies) could be fragmented.
+- Find an integrated way to support IE11. The current approach described in [Technical Choices](https://github.com/cherylz/ninegram#technical-choices) could be fragmented.
 - Evaluate the need of scaling the app and experiment with ways to improve scalability if needed.
 - Make the app a PWA (progressive web app) so users can use it on the mobile's home screen but don't need to download an extra app. I've built a PWA with Create React App ([live demo](https://castalleys.com), [repo](https://github.com/cherylz/castalleys)). It could be interesting to try PWA technologies on vanilla JavaScript.
 
@@ -96,8 +96,9 @@ What I might do differently with additional time:
 
 Code I'm Particularly Proud of:
 
-- I'm happy with the code I wrote with attention to detail, quality and UX. For example, I used debouncing to handle `scroll` event, handled non 200-299 responses when using `Fetch`, and used event delegation to handle `click` events. More importantly, I'm always looking for improvement. So if you have feedback on how to make the code better, I'd appreciate it.
-- In particular, I'm proud of how I maintained a similar level of experience for IE11 users and how I delivered a good experience for modern browsers (yes, I also care about how the browser feels). Check _To support IE11_ in [Technical Choices](https://github.com/cherylz/ninegram#technical-chocies) for elaboration.
+- I'm happy with the code I wrote with attention to detail, quality and UX. For example, I used debouncing to handle `scroll` event, handled non 200-299 responses when using `Fetch`, and used event delegation to handle `click` events.
+- In particular, I'm proud of how I maintained a similar level of experience for IE11 users and how I delivered a good experience for modern browsers (yes, I also care about how the browser feels). Check _To support IE11_ in [Technical Choices](https://github.com/cherylz/ninegram#technical-choices) for elaboration.
+- More importantly, I'm always looking for improvement. So if you have feedback on how to make the code better, I'd appreciate it.
 
 Happy Scores by [Google Lighthouse](https://developers.google.com/web/tools/lighthouse/):
 
