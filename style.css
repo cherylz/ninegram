@@ -65,7 +65,6 @@ a {
 /* Shared styles */
 
 * {
-  outline: 1px solid green; /* For testing purpose. Will be removed before deployment. */
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -155,7 +154,6 @@ header {
 .search-input {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
-  outline: 2px solid pink; /* For testing purpose. Will be removed before deployment. */
   top: -1px;
   width: 90%;
   margin-left: 18px;
@@ -167,7 +165,6 @@ header {
   margin-right: 7px;
   padding-left: 5px;
   padding-right: 5px;
-  outline: 2px solid pink; /* For testing purpose. Will be removed before deployment. */
 }
 
 /* Style <div id="content-container"> */
@@ -334,7 +331,7 @@ h1 {
   left: 0;
   display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .close {
@@ -377,6 +374,7 @@ h1 {
   max-width: 100%;
   max-height: 90vh;
   margin: 0 auto;
+  outline: 1px solid #323232;
   object-fit: contain;
 }
 
@@ -385,6 +383,7 @@ h1 {
   width: 100%;
   max-height: 90vh;
   margin: 0 auto;
+  outline: 1px solid #323232;
 }
 
 .overlay {
@@ -536,7 +535,7 @@ footer {
 
   .search-input {
     font-size: 1.4rem;
-    margin-left: 10px;
+    margin-left: 13px;
   }
 
   .gallery-container {
@@ -624,5 +623,11 @@ footer {
 @media (max-width: 319.98px) {
   html {
     font-size: 8px;
+  }
+}
+
+@media (max-width: 280px) {
+  .overlay {
+    display: none;
   }
 }

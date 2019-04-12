@@ -36,6 +36,7 @@ document.addEventListener('click', function(e) {
   if (e.target.matches('.gallery-img')) {
     // Display the modal.
     modal.className = 'modal';
+
     // Display the corresponding image.
     currentImageIndex = parseInt(e.target.dataset.index);
     showSlide();
@@ -53,7 +54,7 @@ document.addEventListener('click', function(e) {
     handleLightboxClose();
   }
 
-  const inLightboxView = modal.className === 'modal' ? true : false; // In other words, if the modal's class name is 'modal no-display', it means the lightbox is hidden.
+  const inLightboxView = modal.className === 'modal' ? true : false; // In other words, if the modal's class name is 'modal no-display' instead of 'modal', it means the lightbox is hidden.
   if (!e.target.matches('.gallery-img') && inLightboxView) {
     decideWhetherToCloseLightbox(e);
   }
@@ -83,7 +84,7 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Make the navigation menu responsive to page scroll.
+// Make the navigation menu responsive to page scroll while use debouncing to care for browser performance.
 window.addEventListener('scroll', () => (scrolling = true));
 setInterval(() => {
   if (scrolling) {
@@ -202,7 +203,9 @@ function UpdatePage(result) {
       `<div class="slide">
         <img
           src=${item.webformatURL.replace('_640', '_960')}
-          srcset="${item.webformatURL.replace('_640', '_340')} 340w, ${item.webformatURL} 640w, ${item.webformatURL.replace('_640', '_960')} 960w"
+          srcset="${item.webformatURL.replace('_640', '_340')} 340w, ${
+        item.webformatURL
+      } 640w, ${item.webformatURL.replace('_640', '_960')} 960w"
           sizes="80vw"
           alt="${item.tags}"
           class=${slideImgClass}>
@@ -248,15 +251,7 @@ function validateResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  if (searchFromUser) {
-    promptMsg.className = '';
-    promptMsg.textContent =
-      'Oops... Something went wrong. Perhaps try another search term, or just enjoy the existing images below. :)';
-  } else {
-    promptMsg.className = 'prompt-color';
-    promptMsg.textContent = 'Oops... Something went wrong. Please refresh the page.';
-  }
-  throw Error(res.statusText);
+  throw Error(res.statusText); // This function triggers the .catch block and prevents bad responses (non 200-299 responses in this case) from propagating down the fetch chain.
 }
 
 function conductSearch(term) {
