@@ -234,7 +234,7 @@ function UpdatePage(result) {
 }
 
 function checkImageQtyThenUpdatePage(res) {
-  const result = res.hits;
+  const result = res.hits; // Check the 'Example' section on https://pixabay.com/api/docs/ for the API response's data structure.
   if (result.length < 9) {
     if (searchFromUser) {
       promptMsg.className = '';
@@ -267,7 +267,7 @@ function conductSearch(term) {
   }
 
   // Fetch results from API and update page accordingly.
-  const endpoint = `https://pixabay.com/api/?key=11381563-185a2b7b89dac3ac1a22ea903&q=${term}&image_type=photo&min_width=295&min_height=295&per_page=9&editors_choice=true&safesearch=true`;
+  const endpoint = `https://pixabay.com/api/?key=11381563-185a2b7b89dac3ac1a22ea903&q=${term}&image_type=photo&min_width=295&min_height=295&per_page=9&editors_choice=true&safesearch=true`; // Check the 'Parameters' section on https://pixabay.com/api/docs/ for elaboration.
   fetch(endpoint)
     .then(validateResponse)
     .then(checkImageQtyThenUpdatePage)
@@ -276,7 +276,7 @@ function conductSearch(term) {
 
 function handleSearch() {
   const cleanedInput = document.querySelector('input[type=text]').value.trim();
-  const lettersExp = /^[A-Za-z\s]+$/;
+  const lettersExp = /^[A-Za-z\s]+$/; // Matches a string that contains letters and/or spaces only.
 
   if (!cleanedInput) {
     return;
@@ -291,7 +291,7 @@ function handleSearch() {
   if (!cleanedInput.match(lettersExp)) {
     promptMsg.className = 'prompt-color short';
     promptMsg.textContent =
-      'Hmm... Only a search term with letters and space is accepted.';
+      'Hmm... Only a search term with letters and spaces is accepted.';
     return;
   }
 
@@ -312,5 +312,5 @@ function handleEasterEgg() {
   document.querySelector('.easter-egg').innerHTML =
     "<p>You clicked the button, didn't you? They say less is more. So you are not getting more images. Good day ;)</p>";
   easterEggShown = true;
-  localStorage.setItem('easterEggShown', true);
+  localStorage.setItem('easterEggShown', 'true');
 }
