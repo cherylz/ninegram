@@ -62,19 +62,22 @@
     A project by <a href="https://github.com/cherylz" target="_blank" rel="noopener">Cheryl Zeng</a>. Image source: <a href="https://pixabay.com/" target="_blank" rel="noopener">Pixabay</a>.
   </footer>
   <script>
-    var appJS = document.createElement('script'); // Use var instead of const to support older browsers.
-    appJS.type = 'text/javascript';
-
     // Since we aim to support the latest versions of Chrome, Safari, Firefox, and IE, the condition below will 1) allow Chrome, Safari and Firefox to load the js file (app.js) written in ES6 using arrow functions and template strings; 2) detect IE, add polyfill for unsupported features, and supply the compiled js file (app_compiled.js).
     if (window.fetch && window.Promise) {
-      appJS.src = 'app.js';
-      document.head.appendChild(appJS);
-    } else {
-      var polyfillJS = document.createElement('script');
+      loadAppJS('app.js');
+    } else { // IE
+      var polyfillJS = document.createElement('script'); // Use var instead of const to support older browsers.
       polyfillJS.crossorigin = 'anonymous';
+      polyfillJS.async = false; // Turn on synchronous loading to ensure scripts load in the order they are inserted since dynamically inserted scripts load asynchronously by default.
       polyfillJS.src = 'https://polyfill.io/v3/polyfill.min.js?flags=gated&features=es6%2Cdefault%2CElement.prototype.matches%2CElement.prototype.closest%2CPromise%2Cfetch%2CNodeList.prototype.forEach';
       document.head.appendChild(polyfillJS);
-      appJS.src = 'app_compiled.js';
+      loadAppJS('app_compiled.js');
+    }
+
+    function loadAppJS(file) {
+      var appJS = document.createElement('script');
+      appJS.type = 'text/javascript';
+      appJS.src = file;
       document.head.appendChild(appJS);
     }
   </script>
